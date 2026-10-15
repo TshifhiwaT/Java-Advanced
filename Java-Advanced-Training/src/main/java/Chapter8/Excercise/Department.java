@@ -6,11 +6,11 @@ public class Department {
     private int maxEmp;
 
     public Department(String department, int departmentId, int maxEmp) {
-        setDepartment(department);
-        setDepartmentId(departmentId);
-        setMaxEmp(maxEmp);
+
         try {
-            enforceRules();
+            setDepartment(department);
+            setDepartmentId(departmentId);
+            setMaxEmp(maxEmp);
         } catch (DepartmentException ex) {
             throw new RuntimeException(ex.getMessage());
         }
@@ -21,7 +21,10 @@ public class Department {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(String department) throws DepartmentException {
+        if(department.length() != 2){
+            throw new DepartmentException("\nDepartment name should be 2 letter");
+        }
         this.department = department;
     }
 
@@ -29,7 +32,10 @@ public class Department {
         return departmentId;
     }
 
-    public void setDepartmentId(int departmentId) {
+    public void setDepartmentId(int departmentId) throws DepartmentException {
+        if(departmentId < 100 || departmentId > 499){
+            throw new DepartmentException("\nDepartment Id should be between 100 and 499");
+        }
         this.departmentId = departmentId;
     }
 
@@ -37,27 +43,18 @@ public class Department {
         return maxEmp;
     }
 
-    public void setMaxEmp(int maxEmp) {
+    public void setMaxEmp(int maxEmp) throws DepartmentException{
+        if(maxEmp < 4 || maxEmp > 10){
+            throw new DepartmentException("\nMaximum number if employees should be between 4 and 10");
+        }
         this.maxEmp = maxEmp;
     }
 
-    private void enforceRules() throws DepartmentException{
-        String ex = String.format("""
+    public void display() {
+        System.out.format("""
                 Department      : %s
                 Department ID   : %d
                 Max Employees   : %d""", department, departmentId, maxEmp);
-        if(department.length() != 2){
-            ex += "Department name should be 2 letter \n";
-            throw new DepartmentException(ex);
-        }
-        if(departmentId < 100 || departmentId > 499){
-            ex += "Department Id should be between 100 and 499 \n";
-            throw new DepartmentException(ex);
-        }
-        if(maxEmp < 4 || maxEmp > 10){
-            ex += "Maximum number if employees should be between 4 and 10";
-            throw new DepartmentException(ex);
-        }
 
     }
 }
